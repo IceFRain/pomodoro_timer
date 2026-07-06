@@ -8,7 +8,8 @@
 ## 🧩 极致轻量
 启动即化身为一个精美的小型悬浮窗与托盘图标，始终置顶显示，可自由拖动到屏幕上空闲的位置，任务栏亦可，进度一目了然。
 
-<img width="58" height="20" alt="image" src="https://github.com/user-attachments/assets/e793f867-e6de-4de2-a369-580c18ccbd48" />
+<img width="68" height="30" alt="image" src="https://github.com/user-attachments/assets/59015ee7-35af-49bc-aa58-a707392ef7bd" />
+
 
 ## 🖱️ 极简操作
 双击（悬浮窗/托盘） ➔ 唤醒主设置，定制你的专注节奏。
