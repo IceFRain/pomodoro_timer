@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>548</width>
-    <height>232</height>
+    <height>236</height>
    </rect>
   </property>
   <property name="font">
@@ -180,7 +180,7 @@
         <item>
          <widget class="QLineEdit" name="LE_drink_goal">
           <property name="text">
-           <string/>
+           <string>1800</string>
           </property>
          </widget>
         </item>
@@ -214,7 +214,7 @@
         <item>
          <widget class="QLineEdit" name="LE_drink_cup_capacity">
           <property name="text">
-           <string/>
+           <string>500</string>
           </property>
          </widget>
         </item>
@@ -236,7 +236,7 @@
       <item>
        <widget class="QProgressBar" name="B_drink">
         <property name="value">
-         <number>24</number>
+         <number>0</number>
         </property>
         <property name="textVisible">
          <bool>false</bool>

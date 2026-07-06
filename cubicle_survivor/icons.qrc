@@ -1,5 +1,5 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>timer.png</file>
+        <file>cup.png</file>
     </qresource>
 </RCC>

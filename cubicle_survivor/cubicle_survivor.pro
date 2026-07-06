@@ -35,4 +35,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     icons.qrc
 
-RC_ICONS = timer.ico
+RC_ICONS = cup.ico

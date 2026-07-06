@@ -16,11 +16,11 @@ MainWidget::MainWidget(QWidget *parent)
     ui->setupUi(this);
 
     //设置窗口名
-    setWindowTitle("番茄定时器 v1.0.0");
+    setWindowTitle("格子间幸存者");
 
     //设置托盘图标
     m_tray_icon = new QSystemTrayIcon(this);
-    m_tray_icon->setIcon(QIcon(":/icons/timer.png"));
+    m_tray_icon->setIcon(QIcon(":/icons/cup.png"));
     m_tray_icon->show();
     //设置浮窗界面
     m_floating_w.show();
