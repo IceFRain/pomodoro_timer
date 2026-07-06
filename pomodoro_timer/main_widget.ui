@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>265</width>
-    <height>148</height>
+    <width>548</width>
+    <height>232</height>
    </rect>
   </property>
   <property name="font">
@@ -19,70 +19,244 @@
   <property name="windowTitle">
    <string>MainWidget</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout" rowstretch="1,1,1,1" columnstretch="1,1">
-   <item row="0" column="0">
-    <widget class="QLabel" name="L_work_time">
-     <property name="text">
-      <string>工作时间:</string>
+  <layout class="QHBoxLayout" name="horizontalLayout_9">
+   <item>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLineEdit" name="LE_work_time">
-     <property name="text">
-      <string>25</string>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QLabel" name="L_rest_time">
-     <property name="text">
-      <string>休息时间:</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QLineEdit" name="LE_rest_time">
-     <property name="text">
-      <string>5</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QPushButton" name="PB_ok">
-     <property name="text">
-      <string>开始</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QCheckBox" name="CB_floating_window_show">
-     <property name="text">
-      <string>显示悬浮窗</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QPushButton" name="PB_pause">
-     <property name="text">
-      <string>暂停</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QPushButton" name="PB_continue">
-     <property name="text">
-      <string>继续</string>
-     </property>
+     <widget class="QGroupBox" name="groupBox_clcok">
+      <property name="title">
+       <string>番茄时钟</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,1,1,1,1">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,5">
+         <item>
+          <widget class="QLabel" name="L_work_time">
+           <property name="text">
+            <string>工作时间:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="LE_work_time">
+           <property name="text">
+            <string>25</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="2,5">
+         <item>
+          <widget class="QLabel" name="L_rest_time">
+           <property name="text">
+            <string>休息时间:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="LE_rest_time">
+           <property name="text">
+            <string>5</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,1">
+         <item>
+          <widget class="QPushButton" name="PB_ok">
+           <property name="text">
+            <string>开始</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="CB_time_floating_window_show">
+           <property name="text">
+            <string>显示悬浮窗</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="1,1">
+         <item>
+          <widget class="QPushButton" name="PB_pause">
+           <property name="text">
+            <string>暂停</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="PB_continue">
+           <property name="text">
+            <string>继续</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="PB_continue_2">
+         <property name="text">
+          <string>恢复默认</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox_drink">
+      <property name="title">
+       <string>饮水记录</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1,1">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="6,11,2">
+         <item>
+          <widget class="QLabel" name="L_drink_goal">
+           <property name="text">
+            <string>目标饮水:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="LE_drink_goal">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="L_drink_goal_ml">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>ml</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_6" stretch="6,11,2">
+         <item>
+          <widget class="QLabel" name="L_cup_capacity">
+           <property name="text">
+            <string>每杯容量:</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="LE_cup_capacity">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="L_cup_capacity_ml">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>ml</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="B_drink">
+         <property name="value">
+          <number>24</number>
+         </property>
+         <property name="textVisible">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="7,12">
+         <item>
+          <widget class="QPushButton" name="PB_drink_record_cup">
+           <property name="text">
+            <string>记录1杯</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QCheckBox" name="CB_drink_floating_window_show">
+           <property name="text">
+            <string>显示悬浮窗</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8" stretch="3,4,1">
+         <item>
+          <widget class="QPushButton" name="PB_drink_record">
+           <property name="text">
+            <string>记录</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="LE_drink_record">
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="L_drink_record_ml">
+           <property name="layoutDirection">
+            <enum>Qt::LeftToRight</enum>
+           </property>
+           <property name="text">
+            <string>ml</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

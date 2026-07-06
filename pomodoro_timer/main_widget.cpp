@@ -62,7 +62,7 @@ MainWidget::MainWidget(QWidget *parent)
     //连接定时器
     connect(&m_timer, &QTimer::timeout, this, &MainWidget::slot_timer_timeout);
     //连接勾选框
-    connect(ui->CB_floating_window_show,&QCheckBox::toggled,this,&MainWidget::slot_cb_floating_window_show_toggled);
+    connect(ui->CB_time_floating_window_show,&QCheckBox::toggled,this,&MainWidget::slot_cb_floating_window_show_toggled);
     //连接按钮
     connect(ui->PB_ok,&QPushButton::clicked,this,&MainWidget::slot_pb_ok_clicked);
     connect(ui->PB_pause,&QPushButton::clicked,this,&MainWidget::slot_pb_pause_clicked);
