@@ -18,9 +18,12 @@ public:
     ~FloatingWindow();
 
     //设置秒数值
-    void set_value(int value);
+    void set_clock_value(int value);
     //设置秒范围
-    void set_range(int min,int max);
+    void set_clock_range(int min,int max);
+    //时钟进度条显示状态切换
+    void set_bar_clock_show(bool status);
+
 
 private:
     Ui::FloatingWindow *ui;

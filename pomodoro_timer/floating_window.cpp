@@ -26,7 +26,7 @@ FloatingWindow::FloatingWindow(QWidget *parent) :
 
     //设置窗口大小
     setMinimumSize(1,1);
-    resize(80,42);
+    resize(110,20);
 
 #ifdef Q_OS_WIN
     f_hwnd = (HWND)this->winId();
@@ -34,7 +34,7 @@ FloatingWindow::FloatingWindow(QWidget *parent) :
 #endif
 
     //进度条样式设置
-    ui->progressBar->setStyleSheet(
+    ui->B_time->setStyleSheet(
                 "QProgressBar { "
                 " border: 1px solid grey; "
                 " text-align: center; "
@@ -45,19 +45,19 @@ FloatingWindow::FloatingWindow(QWidget *parent) :
                 " width: 1px; "
                 "}"
             );
-    ui->progressBar->setTextVisible(true);
-    this->set_range(0,1500);
-    this->set_value(0);
+    ui->B_time->setTextVisible(true);
+    this->set_clock_range(0,1500);
+    this->set_clock_value(0);
 
     //进度条右键点击菜单设置
-    ui->progressBar->setContextMenuPolicy(Qt::CustomContextMenu);
-    QObject::connect(ui->progressBar, &QWidget::customContextMenuRequested, [&](const QPoint &pos){
+    ui->B_time->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(ui->B_time, &QWidget::customContextMenuRequested, [&](const QPoint &pos){
         QMenu menu;
         QAction *satrt_action = menu.addAction("开始");
         QAction *pause_action = menu.addAction("暂停");
         QAction *continue_action = menu.addAction("继续");
         QAction *quit_action = menu.addAction("退出");
-        QAction *selected = menu.exec(ui->progressBar->mapToGlobal(pos));
+        QAction *selected = menu.exec(ui->B_time->mapToGlobal(pos));
         if (selected == quit_action)
         {
             qApp->quit();
@@ -93,12 +93,12 @@ FloatingWindow::~FloatingWindow()
   * @retval 无
   * 	@arg
  */
-void FloatingWindow::set_value(int value)
+void FloatingWindow::set_clock_value(int value)
 {
-    ui->progressBar->setValue(value);
+    ui->B_time->setValue(value);
     int minutes = value / 60;
     int seconds = value % 60;
-    ui->progressBar->setFormat(QString("%1:%2") .arg(minutes, 2, 10, QChar('0')) .arg(seconds, 2, 10, QChar('0')));
+    ui->B_time->setFormat(QString("%1:%2") .arg(minutes, 2, 10, QChar('0')) .arg(seconds, 2, 10, QChar('0')));
 
 #ifdef Q_OS_WIN
     if(!this->isHidden())
@@ -121,9 +121,20 @@ void FloatingWindow::set_value(int value)
   * @retval 无
   * 	@arg
  */
-void FloatingWindow::set_range(int min, int max)
+void FloatingWindow::set_clock_range(int min, int max)
 {
-    ui->progressBar->setRange(min,max);
+    ui->B_time->setRange(min,max);
+}
+
+/**
+  * @brief 时钟进度条显示状态切换
+  * @param status 是否显示
+  * @retval 无
+  * 	@arg
+ */
+void FloatingWindow::set_bar_clock_show(bool status)
+{
+    ui->B_time->setHidden(!status);
 }
 
 /**
