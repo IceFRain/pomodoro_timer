@@ -55,5 +55,8 @@ compile_commands.json
 
 *_qmlcache.qrc
 
-#用户工程文件
+#鐢ㄦ埛宸ョ▼鏂囦欢
 *.pro.user
+*.pro.user.*
+CMakeLists.txt.user
+CMakeLists.txt.user.*

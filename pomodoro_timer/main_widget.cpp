@@ -16,7 +16,7 @@ MainWidget::MainWidget(QWidget *parent)
     ui->setupUi(this);
 
     //设置窗口名
-    setWindowTitle("番茄定时器");
+    setWindowTitle("番茄定时器 v1.0.0");
 
     //设置托盘图标
     m_tray_icon = new QSystemTrayIcon(this);
