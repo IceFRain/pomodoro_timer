@@ -29,7 +29,7 @@ public:
     //设置饮水进度条范围
     void set_drink_range(int min,int max);
     //饮水量进度条显示状态切换
-    void set_drink_clock_show(bool status);
+    void set_bar_drink_show(bool status);
 
 public slots:
     //时钟进度条右键点击槽
@@ -45,6 +45,9 @@ signals:
     //继续循环信号
     void sig_clock_continue_loop(void);
 
+    //记录一杯饮水信号
+    void sig_drink_record_cup(void);
+
     //双击事件
     void sig_double_clicked(void);
 
@@ -58,8 +61,9 @@ protected:
 
 private:
     Ui::FloatingWindow *ui;
-    QPoint dragPosition{0,0};
-
+    //记录鼠标位置,移动悬浮窗使用
+    QPoint m_drag_position{0,0};
+    //记录当前显示的进度条数量
     uint8_t m_bar_show_count;
     //刷新窗口显示
     void refresh_windows(void);

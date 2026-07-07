@@ -35,7 +35,7 @@ FloatingWindow::FloatingWindow(QWidget *parent) :
     setMinimumSize(1,1);
     resize(WINDOW_WIDTH,WINDOW_HEIGHT);
 
-//windows平台设置
+//windows平台设置窗口属性
 #ifdef Q_OS_WIN
     //获取窗口句柄
     f_hwnd = (HWND)this->winId();
@@ -51,7 +51,7 @@ FloatingWindow::FloatingWindow(QWidget *parent) :
                 " font: 12pt 'MiSans'; "
                 "} "
                 "QProgressBar::chunk { "
-                " background-color: lightgreen; "
+                " background-color: mediumaquamarine; "
                 " width: 1px; "
                 "}"
             );
@@ -66,7 +66,7 @@ FloatingWindow::FloatingWindow(QWidget *parent) :
                 " font: 12pt 'MiSans'; "
                 "} "
                 "QProgressBar::chunk { "
-                " background-color: lightblue; "
+                " background-color: lightskyblue; "
                 " width: 1px; "
                 "}"
             );
@@ -77,7 +77,9 @@ FloatingWindow::FloatingWindow(QWidget *parent) :
     //进度条右键点击槽连接
     ui->B_time->setContextMenuPolicy(Qt::CustomContextMenu);
     QObject::connect(ui->B_time, &QWidget::customContextMenuRequested, this,&FloatingWindow::slot_bar_clock_right_clicked);
-
+    //进度条右键点击槽连接
+    ui->B_drink->setContextMenuPolicy(Qt::CustomContextMenu);
+    QObject::connect(ui->B_drink, &QWidget::customContextMenuRequested, this,&FloatingWindow::slot_bar_drink_right_clicked);
 }
 
 /**
@@ -92,22 +94,25 @@ FloatingWindow::~FloatingWindow()
 }
 
 /**
-  * @brief 设置秒数值
+  * @brief 设置时钟秒数值
   * @param value 当前剩余秒数
   * @retval 无
   * 	@arg
  */
 void FloatingWindow::set_clock_value(int value)
 {
+    //设置进度
     ui->B_time->setValue(value);
+    //设置文字显示
     int minutes = value / 60;
     int seconds = value % 60;
     ui->B_time->setFormat(QString("%1:%2") .arg(minutes, 2, 10, QChar('0')) .arg(seconds, 2, 10, QChar('0')));
+    //刷新窗口
     refresh_windows();
 }
 
 /**
-  * @brief 设置秒范围
+  * @brief 设置时钟秒范围
   * @param min 通常为0
   * @param max 进度条最大时的秒值
   * @retval 无
@@ -126,6 +131,7 @@ void FloatingWindow::set_clock_range(int min, int max)
  */
 void FloatingWindow::set_bar_clock_show(bool status)
 {
+    //如果隐藏状态变化,对应当前显示进度条数量也变化
     if(true==status)
     {
         if(ui->B_time->isHidden())
@@ -152,8 +158,16 @@ void FloatingWindow::set_bar_clock_show(bool status)
  */
 void FloatingWindow::set_drink_value(int value)
 {
-    ui->B_drink->setValue(value);
-    ui->B_drink->setFormat(QString("%1").arg(value));
+    if(value < ui->B_drink->maximum())
+    {
+        ui->B_drink->setValue(value);
+    }
+    else
+    {
+        ui->B_drink->setValue(ui->B_drink->maximum());
+    }
+    int percentage = value * 100 / ui->B_drink->maximum();
+    ui->B_drink->setFormat(QString("%1%").arg(percentage));
 }
 
 /**
@@ -174,8 +188,9 @@ void FloatingWindow::set_drink_range(int min, int max)
   * @retval 无
   * 	@arg
  */
-void FloatingWindow::set_drink_clock_show(bool status)
+void FloatingWindow::set_bar_drink_show(bool status)
 {
+    //如果隐藏状态变化,对应当前显示进度条数量也变化
     if(true==status)
     {
         if(ui->B_drink->isHidden())
@@ -234,7 +249,18 @@ void FloatingWindow::slot_bar_clock_right_clicked(const QPoint &pos)
  */
 void FloatingWindow::slot_bar_drink_right_clicked(const QPoint &pos)
 {
-
+    QMenu menu;
+    QAction *record_cup = menu.addAction("记录一杯");
+    QAction *quit_action = menu.addAction("退出");
+    QAction *selected = menu.exec(ui->B_drink->mapToGlobal(pos));
+    if (selected == quit_action)
+    {
+        qApp->quit();
+    }
+    else if (selected == record_cup)
+    {
+        emit sig_drink_record_cup();
+    }
 }
 
 /**
@@ -245,9 +271,10 @@ void FloatingWindow::slot_bar_drink_right_clicked(const QPoint &pos)
  */
 void FloatingWindow::mousePressEvent(QMouseEvent *event)
 {
+    //记录鼠标点击位置
     if (event->button() == Qt::LeftButton)
     {
-        dragPosition = event->globalPos() - frameGeometry().topLeft();
+        m_drag_position = event->globalPos() - frameGeometry().topLeft();
         event->accept();
     }
 }
@@ -260,9 +287,10 @@ void FloatingWindow::mousePressEvent(QMouseEvent *event)
  */
 void FloatingWindow::mouseMoveEvent(QMouseEvent *event)
 {
+    //鼠标点击后移动,窗口对应移动
     if (event->buttons() & Qt::LeftButton)
     {
-        move(event->globalPos() - dragPosition);
+        move(event->globalPos() - m_drag_position);
         event->accept();
     }
 }
@@ -275,9 +303,10 @@ void FloatingWindow::mouseMoveEvent(QMouseEvent *event)
  */
 void FloatingWindow::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    //鼠标双击发射信号
     if (event->button() == Qt::LeftButton)
     {
-        emit sig_double_clicked();  // 发射你定义的双击信号
+        emit sig_double_clicked();
         event->accept();
     }
 }
@@ -290,6 +319,15 @@ void FloatingWindow::mouseDoubleClickEvent(QMouseEvent *event)
  */
 void FloatingWindow::refresh_windows()
 {
+    //如果没有进度条需要显示,直接隐藏悬浮窗
+    if(m_bar_show_count==0)
+    {
+        this->hide();
+        return;
+    }
+
+    this->show();
+//windows平台刷新窗口显示,强制刷新到最前
 #ifdef Q_OS_WIN
     if(!this->isHidden())
     {
@@ -299,7 +337,7 @@ void FloatingWindow::refresh_windows()
         int y = rect.y();
         int w = rect.width();
         int h = rect.height();
-        SetWindowPos(f_hwnd, HWND_TOPMOST, x, y, w, h, SWP_SHOWWINDOW);
+        SetWindowPos(f_hwnd, HWND_TOPMOST, x, y, w, h, SWP_SHOWWINDOW| SWP_NOACTIVATE);
     }
 #endif
 }
