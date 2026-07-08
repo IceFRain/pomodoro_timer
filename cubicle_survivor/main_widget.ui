@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>548</width>
-    <height>236</height>
+    <width>560</width>
+    <height>270</height>
    </rect>
   </property>
   <property name="font">
@@ -127,7 +127,14 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="3,3,3,1">
+      <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,3,3,3,1">
+       <item>
+        <widget class="QPushButton" name="PB_more_settings">
+         <property name="text">
+          <string>更多设置</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QPushButton" name="PB_version">
          <property name="text">

@@ -71,6 +71,7 @@ MainWidget::MainWidget(QWidget *parent)
     connect(ui->CB_drink_floating_window_show,&QCheckBox::toggled,this,&MainWidget::slot_cb_drink_floating_window_show_toggled);
     connect(ui->CB_auto_start,&QCheckBox::toggled,this,&MainWidget::slot_cb_auto_start_toggled);
     //连接按钮
+    connect(ui->PB_more_settings,&QPushButton::clicked,this,&MainWidget::slot_pb_more_settings_clicked);
     connect(ui->PB_version,&QPushButton::clicked,this,&MainWidget::slot_pb_version_clicked);
     connect(ui->PB_project_url,&QPushButton::clicked,this,&MainWidget::slot_pb_project_url_clicked);
     connect(ui->PB_clock_start,&QPushButton::clicked,this,&MainWidget::slot_pb_clock_start_clicked);
@@ -145,6 +146,17 @@ void MainWidget::slot_pb_version_clicked()
 void MainWidget::slot_pb_project_url_clicked()
 {
     QDesktopServices::openUrl(QUrl("https://github.com/IceFRain/cubicle-survivor"));
+}
+
+/**
+  * @brief 更多设置按钮点击槽
+  * @param 无
+  * @retval 无
+  * 	@arg
+ */
+void MainWidget::slot_pb_more_settings_clicked()
+{
+    m_settings_w.show();
 }
 
 /**

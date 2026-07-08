@@ -19,15 +19,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     floating_window.cpp \
     main.cpp \
-    main_widget.cpp
+    main_widget.cpp \
+    settings_window.cpp
 
 HEADERS += \
     floating_window.h \
-    main_widget.h
+    main_widget.h \
+    settings_window.h
 
 FORMS += \
     floating_window.ui \
-    main_widget.ui
+    main_widget.ui \
+    settings_window.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

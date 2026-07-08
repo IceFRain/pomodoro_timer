@@ -14,6 +14,7 @@
 #include <ShlObj.h>
 #include <QDir>
 #include "floating_window.h"
+#include "settings_window.h"
 
 //设置项结构体
 typedef struct
@@ -46,6 +47,9 @@ private slots:
     //项目官网按钮点击槽
     void slot_pb_project_url_clicked(void);
 
+    //更多设置按钮点击槽
+    void slot_pb_more_settings_clicked(void);
+
     //时钟运行按钮点击槽
     void slot_pb_clock_start_clicked(void);
     //时钟暂停按钮点击槽
@@ -76,6 +80,8 @@ private:
 
     //悬浮窗界面
     FloatingWindow m_floating_w;
+    //更多设置界面
+    SettingsWindow m_settings_w;
 
     //状态栏图标
     QSystemTrayIcon *m_tray_icon;
