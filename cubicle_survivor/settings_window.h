@@ -49,7 +49,7 @@ typedef struct
 }AllSettings;
 
 
-#define SOFT_VERSION    "V1.1.2"
+#define SOFT_VERSION    "V1.1.3"
 
 
 namespace Ui {

@@ -73,7 +73,7 @@ private:
     //运行状态,0初始化,1工作,2休息
     uint8_t m_clock_run_status;
     //当前剩余时间
-    uint32_t m_clock_loop_last;
+    int32_t m_clock_loop_last;
 
     //设置项
     AllSettings *m_settings;

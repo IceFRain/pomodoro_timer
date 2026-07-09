@@ -148,6 +148,10 @@ void MainWidget::slot_pb_clock_start_clicked()
     m_clock_run_status = 1;
     //从工作时间开始倒计时
     m_clock_loop_last = m_settings->clock.work_time*60;
+    if(m_clock_loop_last<=0)
+    {
+        m_clock_loop_last = 1;
+    }
     //悬浮窗进度条设置
     m_floating_w.set_clock_range(0,m_clock_loop_last);
     m_floating_w.set_clock_value(m_clock_loop_last);
@@ -255,17 +259,30 @@ void MainWidget::slot_le_editing_finished()
     if(le == ui->LE_clock_work_time)
     {
         m_settings->clock.work_time = ui->LE_clock_work_time->text().toInt();
+        if(m_settings->clock.work_time < 0)
+        {
+            m_settings->clock.work_time = 0;
+        }
     }
     //休息时间设置
     else if(le == ui->LE_clock_rest_time)
     {
         m_settings->clock.rest_time = ui->LE_clock_rest_time->text().toInt();
+        if(m_settings->clock.rest_time < 0)
+        {
+            m_settings->clock.rest_time = 0;
+        }
     }
     //喝水目标设置
     else if(le == ui->LE_drink_goal)
     {
         m_settings->drink.goal = ui->LE_drink_goal->text().toInt();
         m_settings_w.save_settings_to_file();
+        if(m_settings->drink.goal<=0)
+        {
+            m_settings->drink.goal = 1;
+            ui->LE_drink_goal->setText("1");
+        }
         //进度条范围重新设置
         ui->B_drink->setRange(0,m_settings->drink.goal);
         m_floating_w.set_drink_range(0,m_settings->drink.goal);
@@ -298,12 +315,20 @@ void MainWidget::slot_clock_timer_timeout()
             case 1:
                 m_clock_run_status = 0;
                 m_clock_loop_last = m_settings->clock.rest_time*60;
+                if(m_clock_loop_last<=0)
+                {
+                    m_clock_loop_last = 1;
+                }
                 m_floating_w.set_clock_range(0,m_clock_loop_last);
                 push_message(NotifyType::WorkOver);
             break;
             case 0:
                 m_clock_run_status = 1;
                 m_clock_loop_last = m_settings->clock.work_time*60;
+                if(m_clock_loop_last<=0)
+                {
+                    m_clock_loop_last = 1;
+                }
                 m_floating_w.set_clock_range(0,m_clock_loop_last);
                 push_message(NotifyType::RestOver);
             break;
@@ -502,7 +527,7 @@ void MainWidget::push_message(NotifyType type)
     {
         if(m_settings->notice.sys_notice_enable)
         {
-            m_tray_icon->showMessage(title,msg);
+            m_tray_icon->showMessage(title,msg,QSystemTrayIcon::Information,m_settings->notice.sys_notice_keep_time*1000);
         }
         if(m_settings->notice.messge_box_enable)
         {
