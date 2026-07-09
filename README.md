@@ -67,7 +67,9 @@
 ### 📥 第一步：抓取软件
 点击下方传送门，去发布页面把最新版的生存物资带回家：
 
-👉 **[官方下载链接 / GitHub Releases](https://github.com/IceFRain/cubicle-survivor/releases)**
+👉 **[下载链接/GitHub](https://github.com/IceFRain/cubicle-survivor/releases)**
+
+👉 **[下载链接/Gitee](https://gitee.com/icefrain/cubicle-survivor/releases)**
 
 > **💡 电脑版本怎么选？**
 > * 🚀 比较新的高配电脑 / Windows 11 以上：无脑选 **`x64`** 版本。
