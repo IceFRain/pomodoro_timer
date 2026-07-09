@@ -24,17 +24,17 @@ public:
     //时钟进度条显示状态切换
     void set_bar_clock_show(bool status);
 
-    //设置饮水量
+    //设置喝水量
     void set_drink_value(int value);
-    //设置饮水进度条范围
+    //设置喝水进度条范围
     void set_drink_range(int min,int max);
-    //饮水量进度条显示状态切换
+    //喝水进度条显示状态切换
     void set_bar_drink_show(bool status);
 
 public slots:
     //时钟进度条右键点击槽
     void slot_bar_clock_right_clicked(const QPoint &pos);
-    //饮水量进度条右键点击槽
+    //喝水进度条右键点击槽
     void slot_bar_drink_right_clicked(const QPoint &pos);
 
 signals:
@@ -45,7 +45,7 @@ signals:
     //继续循环信号
     void sig_clock_continue_loop(void);
 
-    //记录一杯饮水信号
+    //记录一杯喝水信号
     void sig_drink_record_cup(void);
 
     //双击事件

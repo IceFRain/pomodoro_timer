@@ -44,9 +44,9 @@ private slots:
     //时钟继续按钮点击槽
     void slot_pb_clock_continue_clicked(void);
 
-    //记录一杯饮水按钮点击槽
+    //记录一杯喝水按钮点击槽
     void slot_pb_drink_record_cup_clicked(void);
-    //记录指定容量饮水按钮点击槽
+    //记录喝指定容量水按钮点击槽
     void slot_pb_drink_record_clicked(void);
 
     //复选框改变槽
@@ -88,7 +88,7 @@ private:
     //删除开机自启动
     bool delete_auto_start(void);    
 
-    //饮水进度条显示数据
+    //喝水进度条显示数据
     void bar_drink_show(int value);
 
     //推送消息

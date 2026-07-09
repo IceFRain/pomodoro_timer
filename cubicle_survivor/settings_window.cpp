@@ -129,7 +129,7 @@ void SettingsWindow::read_settings_from_file()
     m_settings.notice.sys_notice_keep_time = notice["sys_notice_keep_time"].toInt(30);
     m_settings.notice.clock_work_over_tips = notice["clock_work_over_tips"].toString("休息一下~");
     m_settings.notice.clock_rest_over_tips = notice["clock_rest_over_tips"].toString("干活~");
-    m_settings.notice.get_drink_goal_tips  = notice["get_drink_goal_tips"].toString("达成今日饮水目标~");
+    m_settings.notice.get_drink_goal_tips  = notice["get_drink_goal_tips"].toString("达成今日喝水目标~");
 
     init_ui_by_settings();
 }
@@ -204,7 +204,7 @@ void SettingsWindow::slot_pb_reset_settings_clicked()
 
     if (btn == QMessageBox::Yes)
     {
-        //删除后重新读取数据
+        //删除当前设置文件后,重新读取数据,设置为默认值
         QFile::remove("./settings.json");
         read_settings_from_file();
         save_settings_to_file();
@@ -226,18 +226,22 @@ void SettingsWindow::slot_cb_toggled()
         return;
     }
 
+    //番茄时钟通知使能
     if(cb == ui->CB_notice_select_clock)
     {
         m_settings.notice.clock_notice_enable = ui->CB_notice_select_clock->isChecked();
     }
+    //喝水通知使能
     else if(cb == ui->CB_notice_select_drink)
     {
         m_settings.notice.drink_notice_enable = ui->CB_notice_select_drink->isChecked();
     }
+    //系统通知模式使能
     else if(cb == ui->CB_notice_type_message_box)
     {
         m_settings.notice.messge_box_enable = ui->CB_notice_type_message_box->isChecked();
     }
+    //弹窗通知模式使能
     else if(cb == ui->CB_notice_type_sys_notice)
     {
         m_settings.notice.sys_notice_enable = ui->CB_notice_type_sys_notice->isChecked();
@@ -260,6 +264,7 @@ void SettingsWindow::slot_le_editing_finished()
         return;
     }
 
+    //通知停留时间
     if(le == ui->LE_sys_notice_time)
     {
         m_settings.notice.sys_notice_keep_time = ui->LE_sys_notice_time->text().toInt();
@@ -269,14 +274,17 @@ void SettingsWindow::slot_le_editing_finished()
             ui->LE_sys_notice_time->setText("0");
         }
     }
+    //工作时间结束提示信息
     else if(le == ui->LE_custom_work_over_notify)
     {
         m_settings.notice.clock_work_over_tips = ui->LE_custom_work_over_notify->text();
     }
+    //休息时间结束提示信息
     else if(le == ui->LE_custom_rest_over_notify)
     {
         m_settings.notice.clock_rest_over_tips = ui->LE_custom_rest_over_notify->text();
     }
+    //喝水达到目标提示信息
     else if(le == ui->LE_custom_get_drink_goal_notify)
     {
         m_settings.notice.get_drink_goal_tips = ui->LE_custom_get_drink_goal_notify->text();
@@ -297,6 +305,7 @@ void SettingsWindow::init_ui_by_settings()
     ui->CB_notice_select_drink->setChecked(m_settings.notice.drink_notice_enable);
     ui->CB_notice_type_message_box->setChecked(m_settings.notice.messge_box_enable);
     ui->CB_notice_type_sys_notice->setChecked(m_settings.notice.sys_notice_enable);
+
     ui->LE_sys_notice_time->setText(QString::number(m_settings.notice.sys_notice_keep_time));
     ui->LE_custom_work_over_notify->setText(m_settings.notice.clock_work_over_tips);
     ui->LE_custom_rest_over_notify->setText(m_settings.notice.clock_rest_over_tips);

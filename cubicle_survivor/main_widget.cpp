@@ -47,7 +47,7 @@ MainWidget::MainWidget(QWidget *parent)
     connect(&m_floating_w,&FloatingWindow::sig_clock_start_loop,this,&MainWidget::slot_pb_clock_start_clicked);
     connect(&m_floating_w,&FloatingWindow::sig_clock_pause_loop,this,&MainWidget::slot_pb_clock_pause_clicked);
     connect(&m_floating_w,&FloatingWindow::sig_clock_continue_loop,this,&MainWidget::slot_pb_clock_continue_clicked);
-    //连接饮水悬浮窗右键菜单
+    //连接喝水悬浮窗右键菜单
     connect(&m_floating_w,&FloatingWindow::sig_drink_record_cup,this,&MainWidget::slot_pb_drink_record_cup_clicked);
     //连接悬浮窗双击动作
     connect(&m_floating_w, &FloatingWindow::sig_double_clicked,this, [this](){
@@ -117,6 +117,8 @@ MainWidget::MainWidget(QWidget *parent)
 MainWidget::~MainWidget()
 {
     m_clock_timer.disconnect();
+    m_floating_w.disconnect();
+    m_settings_w.disconnect();
     m_tray_icon->disconnect();
     delete ui;
 }
@@ -176,7 +178,7 @@ void MainWidget::slot_pb_clock_continue_clicked()
 }
 
 /**
-  * @brief 记录一杯饮水按钮点击槽
+  * @brief 记录一杯喝水按钮点击槽
   * @param 无
   * @retval 无
   * 	@arg
@@ -187,7 +189,7 @@ void MainWidget::slot_pb_drink_record_cup_clicked()
 }
 
 /**
-  * @brief 记录指定容量饮水按钮点击槽
+  * @brief 记录喝指定容量水按钮点击槽
   * @param 无
   * @retval 无
   * 	@arg
@@ -211,14 +213,17 @@ void MainWidget::slot_cb_toggled()
         return;
     }
 
+    //番茄时钟悬浮窗使能
     if(cb == ui->CB_clock_floating_window_show)
     {
         m_floating_w.set_bar_clock_show(ui->CB_clock_floating_window_show->isChecked());
     }
+    //喝水悬浮窗使能
     else if(cb == ui->CB_drink_floating_window_show)
     {
         m_floating_w.set_bar_drink_show(ui->CB_drink_floating_window_show->isChecked());
     }
+    //开机自启
     else if(cb == ui->CB_auto_start)
     {
         if (ui->CB_auto_start->isChecked())
@@ -246,14 +251,17 @@ void MainWidget::slot_le_editing_finished()
         return;
     }
 
+    //工作时间设置
     if(le == ui->LE_clock_work_time)
     {
         m_settings->clock.work_time = ui->LE_clock_work_time->text().toInt();
     }
+    //休息时间设置
     else if(le == ui->LE_clock_rest_time)
     {
         m_settings->clock.rest_time = ui->LE_clock_rest_time->text().toInt();
     }
+    //喝水目标设置
     else if(le == ui->LE_drink_goal)
     {
         m_settings->drink.goal = ui->LE_drink_goal->text().toInt();
@@ -264,6 +272,7 @@ void MainWidget::slot_le_editing_finished()
         //刷新进度条显示
         bar_drink_show(0);
     }
+    //喝水单杯容量设置
     else if(le == ui->LE_drink_cup_capacity)
     {
         m_settings->drink.cup_capacity = ui->LE_drink_cup_capacity->text().toInt();
@@ -333,10 +342,12 @@ void MainWidget::init_ui_by_settings()
     ui->LE_clock_work_time->setText(QString::number(m_settings->clock.work_time));
     ui->LE_clock_rest_time->setText(QString::number(m_settings->clock.rest_time));
     ui->CB_clock_floating_window_show->setChecked(m_settings->clock.floating_show);
+
     ui->LE_drink_goal->setText(QString::number(m_settings->drink.goal));
     ui->LE_drink_cup_capacity->setText(QString::number(m_settings->drink.cup_capacity));
     ui->CB_drink_floating_window_show->setChecked(m_settings->drink.floating_show);
     ui->B_drink->setRange(0,m_settings->drink.goal);
+
     m_floating_w.set_drink_range(0,m_settings->drink.goal);
     bar_drink_show(0);
     ui->CB_auto_start->setChecked(QFile::exists(get_auto_start_short_cut_path()));
@@ -407,8 +418,8 @@ bool MainWidget::delete_auto_start()
 }
 
 /**
-  * @brief 饮水进度条显示数据
-  * @param value 饮水变化值
+  * @brief 喝水进度条显示数据
+  * @param value 喝水变化值
   * @retval 无
   * 	@arg
  */
@@ -421,7 +432,7 @@ void MainWidget::bar_drink_show(int value)
         push_message(NotifyType::GetDrinkGoal);
     }
 
-    //饮水量加上本次的值,不允许减到负值
+    //喝水量加上本次的值,不允许减到负值
     m_settings->drink.record += value;
     if(m_settings->drink.record < 0)
     {
@@ -437,7 +448,7 @@ void MainWidget::bar_drink_show(int value)
     {
         ui->B_drink->setValue(m_settings->drink.goal);
     }
-    //主界面显示具体饮水值
+    //主界面显示具体喝水值
     ui->B_drink->setFormat(QString("%1 / %2 ml").arg(m_settings->drink.record).arg(m_settings->drink.goal));
 
     //悬浮窗显示百分比
@@ -454,6 +465,7 @@ void MainWidget::bar_drink_show(int value)
  */
 void MainWidget::push_message(NotifyType type)
 {
+    //推送内容填充
     QString title,msg;
     switch (type)
     {
@@ -485,6 +497,7 @@ void MainWidget::push_message(NotifyType type)
         break;
     }
 
+    //推送内容不为空时进行指定方式的推送
     if(!msg.isEmpty())
     {
         if(m_settings->notice.sys_notice_enable)

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>440</width>
-    <height>410</height>
+    <height>421</height>
    </rect>
   </property>
   <property name="font">
@@ -58,7 +58,7 @@
    <item>
     <widget class="QStackedWidget" name="SW_settings">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="page">
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -78,7 +78,7 @@
           <item>
            <widget class="QCheckBox" name="CB_notice_select_drink">
             <property name="text">
-             <string>饮水达标</string>
+             <string>喝水达标</string>
             </property>
            </widget>
           </item>
@@ -202,7 +202,7 @@
             <item>
              <widget class="QLabel" name="label_5">
               <property name="text">
-               <string>饮水达标：</string>
+               <string>喝水达标：</string>
               </property>
              </widget>
             </item>

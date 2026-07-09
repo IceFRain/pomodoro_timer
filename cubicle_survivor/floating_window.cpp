@@ -152,8 +152,8 @@ void FloatingWindow::set_bar_clock_show(bool status)
 }
 
 /**
-  * @brief 设置饮水量
-  * @param value 当前已饮水量
+  * @brief 设置已喝水量
+  * @param value 当前已喝水量
   * @retval 无
   * 	@arg
  */
@@ -172,7 +172,7 @@ void FloatingWindow::set_drink_value(int value)
 }
 
 /**
-  * @brief 设置饮水进度条范围
+  * @brief 设置喝水进度条范围
   * @param min 最小值
   * @param max 最大值
   * @retval 无
@@ -184,7 +184,7 @@ void FloatingWindow::set_drink_range(int min, int max)
 }
 
 /**
-  * @brief 饮水量进度条显示状态切换
+  * @brief 喝水进度条显示状态切换
   * @param status 是否显示
   * @retval 无
   * 	@arg
@@ -243,7 +243,7 @@ void FloatingWindow::slot_bar_clock_right_clicked(const QPoint &pos)
 }
 
 /**
-  * @brief 饮水量进度条右键点击槽
+  * @brief 喝水进度条右键点击槽
   * @param pos
   * @retval 无
   * 	@arg

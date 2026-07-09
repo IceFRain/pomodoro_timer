@@ -175,7 +175,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox_drink">
      <property name="title">
-      <string>饮水记录</string>
+      <string>喝水记录</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2" stretch="1,1,1,1,1">
       <item>
@@ -183,7 +183,7 @@
         <item>
          <widget class="QLabel" name="L_drink_goal">
           <property name="text">
-           <string>目标饮水:</string>
+           <string>喝水目标:</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
