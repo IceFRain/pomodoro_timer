@@ -540,6 +540,8 @@ void MainWidget::push_message(NotifyType type)
             //关闭时自动释放内存
             box->setAttribute(Qt::WA_DeleteOnClose);
             box->setWindowFlags(box->windowFlags() | Qt::WindowStaysOnTopHint);
+            //超时自动关闭
+            QTimer::singleShot(m_settings->notice.sys_notice_keep_time*1000, box, &QMessageBox::accept);
             box->show();
 
             //定位到鼠标当前所在的屏幕进行弹窗
