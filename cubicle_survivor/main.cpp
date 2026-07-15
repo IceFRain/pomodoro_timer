@@ -1,6 +1,6 @@
 #include "main_widget.h"
-
 #include <QApplication>
+
 #include <QFile>
 #include <QMutex>
 #include <QDateTime>
