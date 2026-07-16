@@ -44,6 +44,13 @@
 <br /><img width="141" height="128" alt="image" src="https://github.com/user-attachments/assets/d1e8ee3e-17d3-4f5e-8de7-57e4ba8a70ca" />
 
 
+## 😴 免打扰设置
+
+支持自定义工作时间和午休时间，工作外和午休时安安静静不打扰，亦可开启自动加班：下班后如果还在操作电脑，任然可以继续提醒
+<br /><img width="443" height="454" alt="image" src="https://github.com/user-attachments/assets/c3f4c988-0613-4f7f-b2ee-53721ecd9f12" />
+
+
+
 ---
 
 # 🚀 核心技能（续命指南）
