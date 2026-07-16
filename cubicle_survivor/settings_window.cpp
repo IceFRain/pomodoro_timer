@@ -40,12 +40,21 @@ SettingsWindow::SettingsWindow(QWidget *parent) :
     connect(ui->CB_notice_select_drink,&QCheckBox::toggled,this,&SettingsWindow::slot_cb_toggled);
     connect(ui->CB_notice_type_message_box,&QCheckBox::toggled,this,&SettingsWindow::slot_cb_toggled);
     connect(ui->CB_notice_type_sys_notice,&QCheckBox::toggled,this,&SettingsWindow::slot_cb_toggled);
+    connect(ui->CB_dnd_off_hours,&QCheckBox::toggled,this,&SettingsWindow::slot_cb_toggled);
+    connect(ui->CB_dnd_lunch_break,&QCheckBox::toggled,this,&SettingsWindow::slot_cb_toggled);
+    connect(ui->CB_dnd_auto_detect_overtime,&QCheckBox::toggled,this,&SettingsWindow::slot_cb_toggled);
 
     //输入框连接
     connect(ui->LE_sys_notice_time,&QLineEdit::editingFinished,this,&SettingsWindow::slot_le_editing_finished);
     connect(ui->LE_custom_work_over_notify,&QLineEdit::editingFinished,this,&SettingsWindow::slot_le_editing_finished);
     connect(ui->LE_custom_rest_over_notify,&QLineEdit::editingFinished,this,&SettingsWindow::slot_le_editing_finished);
     connect(ui->LE_custom_get_drink_goal_notify,&QLineEdit::editingFinished,this,&SettingsWindow::slot_le_editing_finished);
+
+    //时间设置框连接
+    connect(ui->TE_dnd_work_start,&QTimeEdit::editingFinished,this,&SettingsWindow::slot_te_editing_finished);
+    connect(ui->TE_dnd_work_end,&QTimeEdit::editingFinished,this,&SettingsWindow::slot_te_editing_finished);
+    connect(ui->TE_dnd_lunch_start,&QTimeEdit::editingFinished,this,&SettingsWindow::slot_te_editing_finished);
+    connect(ui->TE_dnd_lunch_end,&QTimeEdit::editingFinished,this,&SettingsWindow::slot_te_editing_finished);
 
     //默认选择第一组设置项
     ui->LW_list->setCurrentRow(0);
@@ -106,6 +115,7 @@ void SettingsWindow::read_settings_from_file()
     QJsonObject clock  = root["clock"].toObject();
     QJsonObject drink  = root["drink"].toObject();
     QJsonObject notice = root["notice"].toObject();
+    QJsonObject dnd = root["dnd"].toObject();
 
     m_settings.clock.work_time     = clock["work_time"].toInt(25);
     m_settings.clock.rest_time     = clock["rest_time"].toInt(5);
@@ -131,6 +141,14 @@ void SettingsWindow::read_settings_from_file()
     m_settings.notice.clock_work_over_tips = notice["clock_work_over_tips"].toString("休息一下~");
     m_settings.notice.clock_rest_over_tips = notice["clock_rest_over_tips"].toString("干活~");
     m_settings.notice.get_drink_goal_tips  = notice["get_drink_goal_tips"].toString("达成今日喝水目标~");
+
+    m_settings.dnd.off_hours_enable  = dnd["off_hours_enable"].toInt(0);
+    m_settings.dnd.work_start_time  = QTime::fromString(dnd["work_start_time"].toString("09:00"),"HH:mm");
+    m_settings.dnd.work_end_time  = QTime::fromString(dnd["work_end_time"].toString("18:00"),"HH:mm");
+    m_settings.dnd.lunch_break_enable  = dnd["lunch_break_enable"].toInt(0);
+    m_settings.dnd.lunch_start_time  = QTime::fromString(dnd["lunch_start_time"].toString("12:00"),"HH:mm");
+    m_settings.dnd.lunch_end_time  = QTime::fromString(dnd["lunch_end_time"].toString("13:00"),"HH:mm");
+    m_settings.dnd.auto_detect_overtime_enable  = dnd["auto_detect_overtime_enable"].toInt(0);
 
     init_ui_by_settings();
 }
@@ -165,10 +183,20 @@ void SettingsWindow::save_settings_to_file()
     notice["clock_rest_over_tips"] = m_settings.notice.clock_rest_over_tips;
     notice["get_drink_goal_tips"]  = m_settings.notice.get_drink_goal_tips;
 
+    QJsonObject dnd;
+    dnd["off_hours_enable"]   = m_settings.dnd.off_hours_enable;
+    dnd["work_start_time"]   = m_settings.dnd.work_start_time.toString("HH:mm");
+    dnd["work_end_time"]   = m_settings.dnd.work_end_time.toString("HH:mm");
+    dnd["lunch_break_enable"]    = m_settings.dnd.lunch_break_enable;
+    dnd["lunch_start_time"]   = m_settings.dnd.lunch_start_time.toString("HH:mm");
+    dnd["lunch_end_time"]   = m_settings.dnd.lunch_end_time.toString("HH:mm");
+    dnd["auto_detect_overtime_enable"]   = m_settings.dnd.auto_detect_overtime_enable;
+
     QJsonObject root;
     root["clock"]  = clock;
     root["drink"]  = drink;
     root["notice"] = notice;
+    root["dnd"] = dnd;
 
     QFile file("settings.json");
     if (!file.open(QIODevice::WriteOnly))
@@ -258,6 +286,26 @@ void SettingsWindow::slot_cb_toggled()
     {
         m_settings.notice.sys_notice_enable = ui->CB_notice_type_sys_notice->isChecked();
     }
+    //下班后免打扰
+    else if(cb == ui->CB_dnd_off_hours)
+    {
+        m_settings.dnd.off_hours_enable = ui->CB_dnd_off_hours->isChecked();
+        ui->TE_dnd_work_start->setEnabled(m_settings.dnd.off_hours_enable);
+        ui->TE_dnd_work_end->setEnabled(m_settings.dnd.off_hours_enable);
+        ui->CB_dnd_auto_detect_overtime->setEnabled(m_settings.dnd.off_hours_enable);
+    }
+    //午休免打扰
+    else if(cb == ui->CB_dnd_lunch_break)
+    {
+        m_settings.dnd.lunch_break_enable = ui->CB_dnd_lunch_break->isChecked();
+        ui->TE_dnd_lunch_start->setEnabled(m_settings.dnd.lunch_break_enable);
+        ui->TE_dnd_lunch_end->setEnabled(m_settings.dnd.lunch_break_enable);
+    }
+    //自动加班
+    else if(cb == ui->CB_dnd_auto_detect_overtime)
+    {
+        m_settings.dnd.auto_detect_overtime_enable = ui->CB_dnd_auto_detect_overtime->isChecked();
+    }
 
     save_settings_to_file();
 }
@@ -306,6 +354,41 @@ void SettingsWindow::slot_le_editing_finished()
 }
 
 /**
+  * @brief 时间编辑框改变槽
+  * @param 无
+  * @retval 无
+  * 	@arg
+ */
+void SettingsWindow::slot_te_editing_finished()
+{
+    QTimeEdit *te = qobject_cast<QTimeEdit*>(sender());
+    if(!te)
+    {
+        return;
+    }
+
+    //工作开始时间
+    if(te == ui->TE_dnd_work_start)
+    {
+        m_settings.dnd.work_start_time = ui->TE_dnd_work_start->time();
+    }
+    else if(te == ui->TE_dnd_work_end)
+    {
+        m_settings.dnd.work_end_time = ui->TE_dnd_work_end->time();
+    }
+    else if(te == ui->TE_dnd_lunch_start)
+    {
+        m_settings.dnd.lunch_start_time = ui->TE_dnd_lunch_start->time();
+    }
+    else if(te == ui->TE_dnd_lunch_end)
+    {
+        m_settings.dnd.lunch_end_time = ui->TE_dnd_lunch_end->time();
+    }
+
+    save_settings_to_file();
+}
+
+/**
   * @brief 界面按配置初始化
   * @param 无
   * @retval 无
@@ -322,6 +405,25 @@ void SettingsWindow::init_ui_by_settings()
     ui->LE_custom_work_over_notify->setText(m_settings.notice.clock_work_over_tips);
     ui->LE_custom_rest_over_notify->setText(m_settings.notice.clock_rest_over_tips);
     ui->LE_custom_get_drink_goal_notify->setText(m_settings.notice.get_drink_goal_tips);
+
+    ui->CB_dnd_off_hours->setChecked(m_settings.dnd.off_hours_enable);
+    if(!m_settings.dnd.off_hours_enable)
+    {
+        ui->TE_dnd_work_start->setDisabled(true);
+        ui->TE_dnd_work_end->setDisabled(true);
+        ui->CB_dnd_auto_detect_overtime->setDisabled(true);
+    }
+    ui->TE_dnd_work_start->setTime(m_settings.dnd.work_start_time);
+    ui->TE_dnd_work_end->setTime(m_settings.dnd.work_end_time);
+    ui->CB_dnd_lunch_break->setChecked(m_settings.dnd.lunch_break_enable);
+    if(!m_settings.dnd.lunch_break_enable)
+    {
+        ui->TE_dnd_lunch_start->setDisabled(true);
+        ui->TE_dnd_lunch_end->setDisabled(true);
+    }
+    ui->TE_dnd_lunch_start->setTime(m_settings.dnd.lunch_start_time);
+    ui->TE_dnd_lunch_end->setTime(m_settings.dnd.lunch_end_time);
+    ui->CB_dnd_auto_detect_overtime->setChecked(m_settings.dnd.auto_detect_overtime_enable);
 }
 
 

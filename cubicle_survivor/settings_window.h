@@ -40,16 +40,28 @@ typedef struct
     QString clock_rest_over_tips;
     QString get_drink_goal_tips;
 }NoticeSettings;
+//免打扰设置项结构体
+typedef struct
+{
+    short off_hours_enable;
+    QTime work_start_time;
+    QTime work_end_time;
+    short lunch_break_enable;
+    QTime lunch_start_time;
+    QTime lunch_end_time;
+    short auto_detect_overtime_enable;
+}DoNotDisturbSettings;
 //设置项结构体
 typedef struct
 {
     ClockSettings clock;
     DrinkSettings drink;
     NoticeSettings notice;
+    DoNotDisturbSettings dnd;
 }AllSettings;
 
 
-#define SOFT_VERSION    "V1.1.3"
+#define SOFT_VERSION    "V1.1.4"
 
 
 namespace Ui {
@@ -81,6 +93,8 @@ public slots:
     void slot_cb_toggled(void);
     //编辑框编辑完成槽
     void slot_le_editing_finished(void);
+    //时间编辑框改变槽
+    void slot_te_editing_finished(void);
 
 signals:
     //设置改变信号

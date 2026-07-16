@@ -525,6 +525,41 @@ void MainWidget::push_message(NotifyType type)
     //推送内容不为空时进行指定方式的推送
     if(!msg.isEmpty())
     {
+        QTime current_time = QTime::currentTime();
+        //下班免打扰判断
+        if(m_settings->dnd.off_hours_enable)
+        {
+            if(current_time < m_settings->dnd.work_start_time)
+            {
+                //自动加班开启时,上班前指定时间无操作才免打扰
+                if(m_settings->dnd.auto_detect_overtime_enable)
+                {
+                    if(!is_user_active())
+                    {
+                        return;
+                    }
+                }
+            }
+            else if(current_time > m_settings->dnd.work_end_time)
+            {
+                if(m_settings->dnd.auto_detect_overtime_enable)
+                {
+                    if(!is_user_active())
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+        if(m_settings->dnd.lunch_break_enable)
+        {
+            if(current_time > m_settings->dnd.lunch_start_time
+               && current_time < m_settings->dnd.lunch_end_time)
+            {
+                return;
+            }
+        }
+
         if(m_settings->notice.sys_notice_enable)
         {
             m_tray_icon->showMessage(title,msg,QSystemTrayIcon::Information,m_settings->notice.sys_notice_keep_time*1000);
@@ -553,6 +588,26 @@ void MainWidget::push_message(NotifyType type)
             }
         }
     }
+}
+
+/**
+  * @brief 用户是否活跃
+  * @param timeout_ms 限定ms时间
+  * @retval 活跃状态
+  * 	@arg
+ */
+bool MainWidget::is_user_active(int timeout_ms)
+{
+    LASTINPUTINFO lii = {};
+    lii.cbSize = sizeof(LASTINPUTINFO);
+
+    if (!GetLastInputInfo(&lii))
+    {
+        return true;  //调用失败,保守认为活跃
+    }
+
+    DWORD elapsed = GetTickCount() - lii.dwTime;
+    return elapsed < static_cast<DWORD>(timeout_ms);
 }
 
 /**

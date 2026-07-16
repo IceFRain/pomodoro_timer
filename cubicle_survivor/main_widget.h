@@ -94,6 +94,9 @@ private:
     //推送消息
     void push_message(NotifyType type);
 
+    //判断用户是否活跃
+    bool is_user_active(int timeout_ms = 300000);
+
     //重写窗口关闭事件
     void closeEvent(QCloseEvent *event) override;
 };
